@@ -38,13 +38,14 @@ end
 G2_norm=zeros(ndk_bins);
 parfor ii=1:nShot
     tk_collated=vertcat(k{ii:end});     % TODO - this makes entire `k` a broadcast variable for parfor
+    tk=k{ii};       % reference atoms
     
     % NOTE here is the boilerplate
-    tn=size(tk_collated,1);
+    tn=size(tk,1);       % TODO - calc shot-counts array outside parfor
     
     for jj=1:tn
         % BB condition
-        ttK=tk_collated(jj,:);   % this atom which we are looking BB partners for
+        ttK=tk(jj,:);   % this atom which we are looking BB partners for
         tdK=tk_collated((jj+1):end,:)+ttK;   % BB diff-vectors to unique pairs
         G2_norm=G2_norm+nhist(tdK,dk_ed);   % update G2 hist
     end
@@ -56,11 +57,14 @@ nCounts=cellfun(@(x) size(x,1),k);      % number of atoms in each shot
 % pair combinatorics
 % TODO Check maths
 nPairsShot=sum(nCounts.*(nCounts-1)/2);     % no. unique pairs in shot
-nPairsNorm=(sum(nCounts)^2-sum(nCounts.^2))/2;  % no. unique pairs in dataset
+% nPairsNorm=(sum(nCounts)^2-sum(nCounts.^2))/2;  % no. unique pairs in dataset
+nCountsTot=sum(nCounts);
+nPairsNorm=sum(nCountsTot.*(nCountsTot-1)/2);  % no. unique pairs in whole dataset
 
 % normalise G2
 G2_shot=G2_shot/nPairsShot;
 G2_norm=G2_norm/nPairsNorm;
 
 % TODO - can smooth before normalising
+% TODO - check if number of shots needs to be normalised?
 g2=G2_shot./G2_norm;
