@@ -14,6 +14,7 @@ function [g2,G2_shot,G2_norm]=g2_bb(k,dk_ed)
 %   
 
 nShot=size(k,1);
+nCounts=cellfun(@(x) size(x,1),k);
 
 ndk_bins=cellfun(@(ed)numel(ed)-1,dk_ed);
 
@@ -22,10 +23,9 @@ ndk_bins=cellfun(@(ed)numel(ed)-1,dk_ed);
 G2_shot=zeros(ndk_bins);
 parfor ii=1:nShot
     tk=k{ii};       % this shot
-    tn=size(tk,1);  % number of atoms in this shot
+    tn=nCounts(ii);     % number of atoms in this shot
     
-%     for jj=1:(tn-1)
-    for jj=1:tn         % TODO - check if this OK
+    for jj=1:tn
         % BB condition
         ttK=tk(jj,:);   % this atom which we are looking BB partners for
         tdK=tk((jj+1):end,:)+ttK;   % BB diff-vectors to unique pairs
@@ -41,7 +41,7 @@ parfor ii=1:nShot
     tk=k{ii};       % reference atoms
     
     % NOTE here is the boilerplate
-    tn=size(tk,1);       % TODO - calc shot-counts array outside parfor
+    tn=nCounts(ii);     % number of atoms in this shot
     
     for jj=1:tn
         % BB condition
@@ -52,12 +52,9 @@ parfor ii=1:nShot
 end
 
 %%% normalise correlation function
-nCounts=cellfun(@(x) size(x,1),k);      % number of atoms in each shot
-
 % pair combinatorics
-% TODO Check maths
 nPairsShot=sum(nCounts.*(nCounts-1)/2);     % no. unique pairs in shot
-% nPairsNorm=(sum(nCounts)^2-sum(nCounts.^2))/2;  % no. unique pairs in dataset
+
 nCountsTot=sum(nCounts);
 nPairsNorm=sum(nCountsTot.*(nCountsTot-1)/2);  % no. unique pairs in whole dataset
 
@@ -66,5 +63,4 @@ G2_shot=G2_shot/nPairsShot;
 G2_norm=G2_norm/nPairsNorm;
 
 % TODO - can smooth before normalising
-% TODO - check if number of shots needs to be normalised?
 g2=G2_shot./G2_norm;
