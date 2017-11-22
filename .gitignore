@@ -1,0 +1,24 @@
+# Data
+*.dat*
+*.zip*
+*.swp*
+*.swo*
+
+# Log
+*.log
+
+# Output
+*.avi*
+*.jpg*
+*.pdf*
+*.eps*
+*.png*
+
+# Matlab
+*.asv
+*.mat*
+*.fig*
+
+# vim
+*.sw*
+*~
