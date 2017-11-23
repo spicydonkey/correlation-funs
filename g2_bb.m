@@ -54,8 +54,8 @@ end
 %%% normalise correlation function
 % pair combinatorics
 %   count all unique pairs from data
-nPairsShot=sum(arrayfun(@(n)nchoosek(n,2),nCounts));
-nPairsNorm=nchoosek(sum(nCounts),2);
+nPairsShot=sum(arrayfun(@(n)nCk(n,2),nCounts));
+nPairsNorm=nCk(sum(nCounts),2);
 
 % normalise G2
 G2_shot=G2_shot/nPairsShot;
