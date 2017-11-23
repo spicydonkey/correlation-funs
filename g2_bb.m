@@ -6,12 +6,12 @@ function [g2,G2_shot,G2_norm]=g2_bb(k,dk_ed)
 % * this is the simplest way to call back-to-back g2 correlation
 %
 %
-% k: nShot x 1 cell array of *halo* counts
+% k: nShot x 1 cell array of particle positions (cart zxy)
 % dk_ed: diff-k bin edges (1x3 Cart cell-array of (ncent+1)x1 array)
 %
 % TODO
 % * [ ] boilerplate code in G2
-%   
+% * [ ] return G2 grid centers
 
 nShot=size(k,1);
 nCounts=cellfun(@(x) size(x,1),k);
@@ -53,10 +53,9 @@ end
 
 %%% normalise correlation function
 % pair combinatorics
-nPairsShot=sum(nCounts.*(nCounts-1)/2);     % no. unique pairs in shot
-
-nCountsTot=sum(nCounts);
-nPairsNorm=sum(nCountsTot.*(nCountsTot-1)/2);  % no. unique pairs in whole dataset
+%   count all unique pairs from data
+nPairsShot=sum(arrayfun(@(n)nchoosek(n,2),nCounts));
+nPairsNorm=nchoosek(sum(nCounts),2);
 
 % normalise G2
 G2_shot=G2_shot/nPairsShot;
@@ -64,3 +63,5 @@ G2_norm=G2_norm/nPairsNorm;
 
 % TODO - can smooth before normalising
 g2=G2_shot./G2_norm;
+
+end
