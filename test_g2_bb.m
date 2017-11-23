@@ -4,13 +4,13 @@ nPairs=400;
 k_dither=0.02*[1,1,1];
 det_qe=0.1;
 
-k_dist=cell(nShots,2);
+k_src=cell(nShots,2);
 for ii=1:nShots
-    [k_dist{ii,1},k_dist{ii,2}]=genCorrSource(nPairs,k_dither,det_qe);
+    [k_src{ii,1},k_src{ii,2}]=genCorrSource(nPairs,k_dither,det_qe);
 end
 
 % partners combined and indistinguishable
-k=cellfun(@(k1,k2) vertcat(k1,k2),k_dist(:,1),k_dist(:,2),'UniformOutput',false);
+k=cellfun(@(k1,k2) vertcat(k1,k2),k_src(:,1),k_src(:,2),'UniformOutput',false);
 
 %% TEST g2
 % set up bins
@@ -24,7 +24,7 @@ dk=ndgrid(dk_cent{:});      % grid of dk centers
 
 % run g2
 [g2,G2s,G2n]=g2_bb(k,dk_ed);          % simple BB particle counts
-% [g2,G2s,G2n]=g2x_bb(k_dist,dk_ed);      % 2-species BB
+% [g2,G2s,G2n]=g2x_bb(k_src,dk_ed);      % 2-species BB
 
 %% plot g2
 idx_zero=ceil(nbin/2);
