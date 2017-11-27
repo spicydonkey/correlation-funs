@@ -12,7 +12,6 @@ function [g2,G2_shot,G2_norm,G2_shot_sdev,G2_norm_sdev]=g2_bb_fast(k,dk_ed,rsamp
 % rsamp:    fraction of total uncorrelated data to sample for speed-up in normalising g2
 %
 % TODO
-% * [ ] boilerplate code in G2
 % * [ ] return G2 grid centers
 
 nShot=size(k,1);
@@ -27,8 +26,8 @@ parfor ii=1:nShot
     tk=k{ii};       % k-vecs in this shot
     ncorr_shot(:,:,:,ii)=ncorr_bb(tk,dk_ed);        % update G2 hist
 end
-G2_shot=mean(ncorr_shot,4);
-G2_shot_sdev=std(ncorr_shot,0,4);
+G2_shot=mean(ncorr_shot,4,'omitnan');           % shot averaged G2 (omitnan is required to deal with empty halos)
+G2_shot_sdev=std(ncorr_shot,0,4,'omitnan');
 
 %%% normalising 2-particle histogram
 % G2_norm=zeros(ndk_bins);
@@ -45,8 +44,8 @@ parfor ii=1:nRepSamp
     
     ncorr_norm(:,:,:,ii)=ncorr_bb(tk_coll_samp,dk_ed);   % update G2 hist
 end
-G2_norm=mean(ncorr_norm,4);
-G2_norm_sdev=std(ncorr_norm,0,4);
+G2_norm=mean(ncorr_norm,4,'omitnan');       % rep averaged G2 (omitnan is required to deal with empty halos)
+G2_norm_sdev=std(ncorr_norm,0,4,'omitnan');
 
 
 % TODO - can smooth before normalising
