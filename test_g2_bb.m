@@ -1,8 +1,8 @@
 %%% create halos
 nShots=1e3;
-nPairs=400;
-k_dither=0.02*[1,1,1];
-det_qe=0.1;
+nPairs=100;
+k_dither=0.0141*[1,1,1];
+det_qe=0.5;
 
 k_src=cell(nShots,2);
 for ii=1:nShots
@@ -23,7 +23,8 @@ dk_cent={dk_cent_vec,dk_cent_vec,dk_cent_vec};
 dk=ndgrid(dk_cent{:});      % grid of dk centers
 
 % run g2
-[g2,G2s,G2n]=g2_bb(k,dk_ed);          % simple BB particle counts
+% [g2,G2s,G2n]=g2_bb(k,dk_ed);          % simple BB particle counts
+[g2,G2s,G2n]=g2_bb_fast(k,dk_ed,0.1);          % simple BB particle counts
 % [g2,G2s,G2n]=g2x_bb(k_src,dk_ed);      % 2-species BB
 
 %% plot g2
