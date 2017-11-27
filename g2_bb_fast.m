@@ -20,7 +20,6 @@ nCounts=cellfun(@(x) size(x,1),k);
 ndk_bins=cellfun(@(ed)numel(ed)-1,dk_ed);
 
 %%% shot-to-shot 2-particle histogram
-% G2_shot=zeros(ndk_bins);
 ncorr_shot=zeros([ndk_bins,nShot]);     % preallocate correlation matrix
 parfor ii=1:nShot
     tk=k{ii};       % k-vecs in this shot
@@ -30,7 +29,6 @@ G2_shot=mean(ncorr_shot,4,'omitnan');           % shot averaged G2 (omitnan is r
 G2_shot_sdev=std(ncorr_shot,0,4,'omitnan');
 
 %%% normalising 2-particle histogram
-% G2_norm=zeros(ndk_bins);
 k_coll=vertcat(k{1:end});       % all shots collated
 nTotCounts=sum(nCounts);
 nSampCounts=round(nTotCounts*rsamp);
