@@ -14,10 +14,8 @@ function [g2,G2_shot,G2_norm]=g2_bb(k,dk_ed)
 % * [ ] return G2 grid centers
 
 nShot=size(k,1);
-nCounts=cellfun(@(x) size(x,1),k);
-
+nCounts=shotSize(k);
 ndk_bins=cellfun(@(ed)numel(ed)-1,dk_ed);
-
 
 %%% shot-to-shot 2-particle histogram
 G2_shot=zeros(ndk_bins);
@@ -61,7 +59,7 @@ nPairsNorm=nCk(sum(nCounts),2);
 G2_shot=G2_shot/nPairsShot;
 G2_norm=G2_norm/nPairsNorm;
 
-% TODO - can smooth before normalising
+% NOTE: pre-filtering can significantly improve SNR
 g2=G2_shot./G2_norm;
 
 end

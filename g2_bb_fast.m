@@ -15,8 +15,7 @@ function [g2,G2_shot,G2_norm,G2_shot_sdev,G2_norm_sdev]=g2_bb_fast(k,dk_ed,rsamp
 % * [ ] return G2 grid centers
 
 nShot=size(k,1);
-nCounts=cellfun(@(x) size(x,1),k);
-
+nCounts=shotSize(k);
 ndk_bins=cellfun(@(ed)numel(ed)-1,dk_ed);
 
 %%% shot-to-shot 2-particle histogram

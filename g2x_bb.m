@@ -16,10 +16,8 @@ function [g2,G2_shot,G2_norm]=g2x_bb(k,dk_ed)
 %
 
 nShot=size(k,1);
-nCounts=cellfun(@(x) size(x,1),k);
-
+nCounts=shotSize(k);
 ndk_bins=cellfun(@(ed) numel(ed)-1,dk_ed);
-
 
 %%% shot-to-shot 2-particle histogram
 G2_shot=zeros(ndk_bins);
