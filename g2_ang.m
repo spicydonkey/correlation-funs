@@ -26,13 +26,16 @@ G2_corr=zeros(nbins,1);
 parfor ii=1:nShot
     this_ks=ks{ii};     % this shot
     this_n=nCounts(ii); % number of atoms in this shot
-    
     for jj=1:this_n
         % rel-angle between all unique atom-pairs
         this_dth=diffAngleSph(this_ks(jj,1),this_ks(jj,2),...
             this_ks((jj+1):end,1),this_ks((jj+1):end,2));
         G2_corr=G2_corr+nhist(this_dth,{dth_ed});     % update G2 hist
     end
+
+%     % encapsulated the g2 boilerplate
+%     [~,Ncorr]=ncorr_ang(this_ks,dth_ed);
+%     G2_corr=G2_corr+Ncorr;
 end
 
 %%% uncorrelated 2-particle histogram
@@ -51,6 +54,12 @@ parfor ii=1:nShot
     end
 end
 
+% % encapsulated the g2 boilerplate
+% [~,Nunc]=ncorr_ang(vertcat(ks{:}),dth_ed);
+% % NB the above is going to be computationally expensive: uncorrelated G2 
+% %   by collating all shots and running 2-part coincidence histogram
+% G2_unc=Nunc;
+
 %%% normalise correlation function
 % pair combinatorics
 %   count all unique pairs from data
@@ -63,3 +72,5 @@ G2_unc=G2_unc/nPairsUnc;
 
 % NOTE: pre-filtering can significantly improve SNR
 g2=G2_corr./G2_unc;
+
+end

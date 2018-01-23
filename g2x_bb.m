@@ -62,7 +62,6 @@ nPairsNorm=prod(sum(nCounts,1));    % no. unique pairs x-species all exp
 G2_shot=G2_shot/nPairsShot;
 G2_norm=G2_norm/nPairsNorm;
 
-% TODO - can smooth before normalising
 g2=G2_shot./G2_norm;
 
 end

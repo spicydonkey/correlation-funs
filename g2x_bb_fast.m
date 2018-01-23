@@ -55,7 +55,6 @@ end
 G2_norm=mean(ncorr_norm,4,'omitnan');       % rep averaged G2 (omitnan is required to deal with empty halos)
 G2_norm_sdev=std(ncorr_norm,0,4,'omitnan');
 
-% TODO - can smooth before normalising
 g2=G2_shot./G2_norm;
 
 end
