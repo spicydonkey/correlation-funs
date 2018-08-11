@@ -5,8 +5,8 @@
 % DKS
 %
 
-config_name='C:\Users\David\Documents\MATLAB\correlation-funs\bootstrap\config_3.m';
-
+% config_name='C:\Users\David\Documents\MATLAB\correlation-funs\bootstrap\config_3.m';
+config_name='C:\Users\HE BEC\Documents\MATLAB\correlation-funs\bootstrap\config_3.m';
 
 %% load config
 run(config_name);

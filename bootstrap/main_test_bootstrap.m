@@ -8,9 +8,9 @@
 
 
 %% config for bootstrapping
-n_bs_rep=3;        % no. times to repeat bootstrapping for statistical variation
-n_frac_samp_vec=[0.05,0.1];     % fractional size of sample
-n_subset_vec=[5,10];         % no. of subsets
+n_bs_rep=1;        % no. times to repeat bootstrapping for statistical variation
+n_frac_samp_vec=[0.05,0.01];     % fractional size of sample
+n_subset_vec=[10,20,40,80,160,320,640];         % no. of subsets
 
 
 %% evaluate all configurations
@@ -18,8 +18,10 @@ niter_frac_samp=numel(n_frac_samp_vec);
 niter_subset=numel(n_subset_vec);
 
 g2_bs_avg=cell(niter_frac_samp,1);
+g2_bs_std=cell(niter_frac_samp,1);
 for idx_frac=1:niter_frac_samp
     g2_bs_avg{idx_frac}=NaN(niter_subset,3);
+    g2_bs_std{idx_frac}=NaN(niter_subset,3);
     for idx_samp=1:niter_subset
         n_frac_samp=n_frac_samp_vec(idx_frac);    % subset fractional size
         n_subset=n_subset_vec(idx_samp);          % no. of subsets
