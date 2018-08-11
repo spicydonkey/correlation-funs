@@ -9,10 +9,9 @@
 exp_param=expparams();
 
 %% CONFIGS
-configs.path.base='C:\Users\HE BEC\bell_data\exp5_bell_yrot';
+configs.path.base='C:\Users\David\Documents\bell\exp5_bell_yrot\3';
 
-configs.path.data='C:\Users\HE BEC\bell_data\exp5_bell_yrot\3';
-% configs.path.data=fullfile(configs.path.base,'data');
+configs.path.data=configs.path.base;
 % exp_num=3;
 % configs.path.data=fullfile(configs.path.base,'data',num2str(exp_num));
 
