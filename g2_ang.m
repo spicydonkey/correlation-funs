@@ -1,4 +1,4 @@
-function [g2,G2_corr,G2_unc]=g2_ang(k,dth_ed)
+function [g2,G2_shot,G2_norm]=g2_ang(k,dth_ed)
 %2-particle correlations in relative angle in spherical-polar coord
 %
 %   k: nShotx1 cell-array of cart ZXY coords
@@ -22,15 +22,15 @@ nCounts=shotSize(ks);
 nbins=numel(dth_ed)-1;
 
 %%% correlated 2-particle histogram
-G2_corr=zeros(nbins,1);
+G2_shot=zeros(nbins,1);
 parfor ii=1:nShot
-    this_ks=ks{ii};     % this shot
-    this_n=nCounts(ii); % number of atoms in this shot
-    for jj=1:this_n
+    tks=ks{ii};     % this shot
+    tn=nCounts(ii); % number of atoms in this shot
+    for jj=1:tn
         % rel-angle between all unique atom-pairs
-        this_dth=diffAngleSph(this_ks(jj,1),this_ks(jj,2),...
-            this_ks((jj+1):end,1),this_ks((jj+1):end,2));
-        G2_corr=G2_corr+nhist(this_dth,{dth_ed});     % update G2 hist
+        tdth=diffAngleSph(tks(jj,1),tks(jj,2),...
+            tks((jj+1):end,1),tks((jj+1):end,2));
+        G2_shot=G2_shot+nhist(tdth,{dth_ed});     % update G2 hist
     end
 
 %     % encapsulated the g2 boilerplate
@@ -40,17 +40,17 @@ end
 
 %%% uncorrelated 2-particle histogram
 % TODO - this scales horribly with number of shots
-G2_unc=zeros(nbins,1);
+G2_norm=zeros(nbins,1);
 parfor ii=1:nShot
     % self-included in "uncorrelated"
     this_ks_collated=vertcat(ks{ii:end});       % TODO - this makes entire data a broadcast variable for parfor
-    this_ks=ks{ii};     % ref parts
-    this_n=nCounts(ii);
+    tks=ks{ii};     % ref parts
+    tn=nCounts(ii);
     
-    for jj=1:this_n
-        this_dth=diffAngleSph(this_ks(jj,1),this_ks(jj,2),...
+    for jj=1:tn
+        tdth=diffAngleSph(tks(jj,1),tks(jj,2),...
             this_ks_collated((jj+1):end,1),this_ks_collated((jj+1):end,2));
-        G2_unc=G2_unc+nhist(this_dth,{dth_ed});
+        G2_norm=G2_norm+nhist(tdth,{dth_ed});
     end
 end
 
@@ -63,14 +63,14 @@ end
 %%% normalise correlation function
 % pair combinatorics
 %   count all unique pairs from data
-nPairsCorr=sum(arrayfun(@(n)nCk(n,2),nCounts));
-nPairsUnc=nCk(sum(nCounts),2);
+nPairsShot=sum(arrayfun(@(n)nCk(n,2),nCounts));
+nPairsNorm=nCk(sum(nCounts),2);
 
 % normalise G2
-G2_corr=G2_corr/nPairsCorr;
-G2_unc=G2_unc/nPairsUnc;
+G2_shot=G2_shot/nPairsShot;
+G2_norm=G2_norm/nPairsNorm;
 
 % NOTE: pre-filtering can significantly improve SNR
-g2=G2_corr./G2_unc;
+g2=G2_shot./G2_norm;
 
 end
