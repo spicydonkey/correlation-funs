@@ -58,7 +58,7 @@ if M == 1
                 N_dth_all = N_dth_all + this_N;
             else
                 % pairs observed in different shots
-                N_dth_all = N_dth_all + 2*this_N;       % count twice for missed case jj < ii
+                N_dth_all = N_dth_all + this_N;       
             end
             
             counter = counter + 1;
