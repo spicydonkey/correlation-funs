@@ -26,7 +26,8 @@ end
 dtheta = diffAngleXYZ(x1,y1,z1,x2',y2',z2');
 
 if b_self
-    dtheta(boolean(eye(size(dtheta)))) = nan;
+    % set self-paired diff angle (zero) to NaN.
+    dtheta(logical(eye(size(dtheta)))) = nan;
 end
 
 end
